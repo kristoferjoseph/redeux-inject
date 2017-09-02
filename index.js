@@ -1,20 +1,20 @@
 var noop = require('noope')
-var store
-var publish
+var _store
+var _dispatch
 
-function Injector (storage) {
-  store = storage || noop
-  publish = store.dispatch || noop
+function Injector (store) {
+  _store = store || noop
+  _dispatch = store.dispatch || noop
 }
 
 function inject (model) {
   return function (component) {
-    return component(model && model(store()))
+    return component && component(model && model(_store()))
   }
 }
 
 function dispatch (fn) {
-  fn(publish)
+  fn && fn(_dispatch)
 }
 
 Injector.inject = inject
