@@ -9,12 +9,12 @@ function Injector (store) {
 
 function inject (model) {
   return function (component) {
-    return component && component(model && model(_store()))
+    return component && component(model ? model(_store()) : _store())
   }
 }
 
-function dispatch (fn) {
-  fn && fn(_dispatch)
+function dispatch (action) {
+  action && _dispatch(action)
 }
 
 Injector.inject = inject

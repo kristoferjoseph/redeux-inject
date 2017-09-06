@@ -1,7 +1,7 @@
 var test = require('tape')
 var Injector = require('./')
-var store = require('redeux')(things, stuff)
-Injector(store)
+var Store = require('redeux')
+
 function things (state, action) {
   return {
     things: 'things',
@@ -10,6 +10,7 @@ function things (state, action) {
     }
   }
 }
+
 function stuff (state, action) {
   return {
     stuff: 'stuff',
@@ -30,7 +31,8 @@ test('inject', t=> {
 })
 
 test('should inject state', t=> {
-
+  var store = Store(stuff)
+  Injector(store)
   function model (state) {
     return {
       one: state.stuff.things.other
@@ -46,18 +48,41 @@ test('should inject state', t=> {
 
 })
 
+test('should inject state even without model', t=> {
+  var store = Store(things)
+  Injector(store)
+  var inject = Injector.inject()
+
+  function component (state) {
+    t.equal(state.things.things, 'things')
+    t.end()
+  }
+
+  inject(component)
+
+})
+
 test('dispatch', t=> {
   t.ok(Injector.dispatch, 'exported')
   t.end()
 })
 
-test('should inject dispatch', t=> {
+test('should dispatch', t=> {
 
-  function callit (dispatch) {
-    t.ok(dispatch, 'dispatch injected')
-    t.end()
+  var store = Store(fake)
+  Injector(store)
+
+  function fake (state, action) {
+    if (action && action.type === 'ACTION') {
+      t.ok(true, 'action dispatched')
+      t.end()
+    }
+    return 'fake'
   }
 
-  Injector.dispatch(callit)
+  Injector.dispatch({
+    type: 'ACTION',
+    data: 'stuff'
+  })
 
 })
