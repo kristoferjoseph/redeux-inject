@@ -40,25 +40,12 @@ test('should inject state', t=> {
   }
 
   function component (state) {
-    t.equal(state.one, 'things')
+    var one = state.stuff.things.other
+    t.equal(one, 'things')
     t.end()
   }
 
-  Injector.inject(model)(component)
-
-})
-
-test('should inject state even without model', t=> {
-  var store = Store(things)
-  Injector(store)
-  var inject = Injector.inject()
-
-  function component (state) {
-    t.equal(state.things.things, 'things')
-    t.end()
-  }
-
-  inject(component)
+  Injector.inject(component)
 
 })
 

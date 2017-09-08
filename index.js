@@ -7,10 +7,8 @@ function Injector (store) {
   _dispatch = store.dispatch || noop
 }
 
-function inject (model) {
-  return function (component) {
-    return component && component(model ? model(_store()) : _store())
-  }
+function inject (component) {
+  return component && component(_store())
 }
 
 function dispatch (action) {

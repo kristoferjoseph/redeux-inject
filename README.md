@@ -29,17 +29,12 @@ function things (state, action) {
 }
 
 // Inject
-function model (state) {
-  return {
-    one: state.things.other
-  }
-}
-
 function component (state) {
-  console.log(state.one) // 'stuff'
+  var one = state.things.stuff.other
+  console.log(one) // 'stuff'
 }
 
-Injector.inject(model)(component)
+Injector.inject(component)
 
 // Dispatch
 function callit (dispatch) {
